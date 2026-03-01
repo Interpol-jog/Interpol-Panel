@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTERPOL Panel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-950 text-white font-sans">
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="flex items-center justify-center h-screen">
+    <div class="bg-gray-900 p-10 rounded-xl shadow-xl text-center">
+        <h1 class="text-2xl text-blue-500 mb-4">INTERPOL Zugang</h1>
+        <input id="keywordInput" type="password" placeholder="Keyword eingeben"
+            class="p-2 rounded text-black w-full mb-4">
+        <button onclick="checkKeyword()" 
+            class="bg-blue-600 px-4 py-2 rounded w-full">
+            Login
+        </button>
+        <p id="error" class="text-red-500 mt-3 hidden">Falsches Keyword!</p>
+    </div>
+</div>
+
+<!-- MAIN PANEL -->
+<div id="panel" class="hidden">
+
+<nav class="bg-gray-900 p-4 flex justify-between">
+    <h1 class="text-xl font-bold text-blue-500">INTERPOL</h1>
+    <button onclick="enableEdit()" 
+        class="bg-blue-600 px-4 py-1 rounded">
+        Edit Mode
+    </button>
+</nav>
+
+<section class="p-10">
+    <h2 class="text-3xl text-blue-500 mb-6">Dashboard</h2>
+
+    <div class="grid grid-cols-3 gap-6">
+
+        <div class="bg-gray-800 p-6 rounded-xl">
+            <h3>Fam Credits</h3>
+            <p id="credits" contenteditable="false"
+                class="text-2xl text-blue-400">250,000 $</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl">
+            <h3>Mitglieder</h3>
+            <p id="members" contenteditable="false"
+                class="text-2xl text-blue-400">18</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl">
+            <h3>Nächstes Event</h3>
+            <p id="event" contenteditable="false"
+                class="text-2xl text-blue-400">Großraub</p>
+        </div>
+
+    </div>
+
+    <button onclick="saveChanges()" 
+        class="mt-6 bg-green-600 px-4 py-2 rounded hidden"
+        id="saveBtn">
+        Speichern
+    </button>
+
+</section>
+
+</div>
+
+<script>
+const SECRET_KEYWORD = "INTERPOL2026"; // HIER DEIN KEYWORD ÄNDERN
+
+function checkKeyword() {
+    const input = document.getElementById("keywordInput").value;
+    if (input === SECRET_KEYWORD) {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("panel").style.display = "block";
+        loadData();
+    } else {
+        document.getElementById("error").classList.remove("hidden");
+    }
+}
+
+function enableEdit() {
+    document.getElementById("credits").contentEditable = true;
+    document.getElementById("members").contentEditable = true;
+    document.getElementById("event").contentEditable = true;
+    document.getElementById("saveBtn").classList.remove("hidden");
+}
+
+function saveChanges() {
+    localStorage.setItem("credits", document.getElementById("credits").innerText);
+    localStorage.setItem("members", document.getElementById("members").innerText);
+    localStorage.setItem("event", document.getElementById("event").innerText);
+    alert("Gespeichert!");
+}
+
+function loadData() {
+    if(localStorage.getItem("credits"))
+        document.getElementById("credits").innerText = localStorage.getItem("credits");
+    if(localStorage.getItem("members"))
+        document.getElementById("members").innerText = localStorage.getItem("members");
+    if(localStorage.getItem("event"))
+        document.getElementById("event").innerText = localStorage.getItem("event");
+}
+</script>
+
+</body>
+</html>
